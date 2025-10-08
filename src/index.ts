@@ -19,7 +19,18 @@ client
       await message.reply("Hello World!");
     } else if (message.content == "タスク教えて") {
       const spreadLoader = new SpreadLoader(process.env.TARGET_SPREAD_SEET_ID);
-      spreadLoader.load("GanttChart");
+      await spreadLoader.load("GanttChart");
+
+      if (!spreadLoader.isLoaded) {
+        await message.channel.send("読み込みできなかった！");
+        return;
+      }
+
+      const sl = spreadLoader;
+
+      const text: string = [`タイトル${sl.getValue(0, 0)}`].join("\n");
+
+      await message.channel.send(text);
     }
   });
 
