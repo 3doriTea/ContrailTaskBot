@@ -1,4 +1,5 @@
 import { GoogleSpreadSheetJson } from "./oritinalJsonType";
+import { CellPosition } from "./types/dataCellPos";
 
 /**
  * Google Spread Sheet のjsonにアクセスするためのラップクラス
@@ -10,6 +11,11 @@ export class SpreadSheetAccessor {
    */
   constructor(private json: GoogleSpreadSheetJson) {}
 
+  public get ref(): GoogleSpreadSheetJson { return this.json;}
+
+  getValueByCellPos(cellPos: CellPosition): string | null {
+    return this.getValue(cellPos.row, cellPos.column);
+  }
   /**
    * 指定したセルの値を取得
    * @param row 行
