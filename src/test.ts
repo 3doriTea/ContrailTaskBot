@@ -1,6 +1,7 @@
 import { SpreadLoader } from "./spreadLoader";
 import { setGlobalDispatcher, EnvHttpProxyAgent } from "undici" 
 import { taskView } from "./formatter/taskView";
+import { AllTaskMessage } from "./messageBuilder/allTaskMessage";
 
 // プロキシが設定されているなら使う
 if (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) {
@@ -17,6 +18,9 @@ const main = async () => {
 
   const text = taskView.data(loader.sheetAccessor);
   console.log(text);
+
+  const showText = new AllTaskMessage().gen(text);
+  console.log(showText);
 }
 
 main().then();
