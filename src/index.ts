@@ -1,5 +1,7 @@
 import { Client, Events, GatewayActivity, GatewayIntentBits } from "discord.js";
 import { SpreadLoader } from "./spreadLoader";
+import { taskView } from "./formatter/taskView";
+import { AllTaskMessage } from "./messageBuilder/allTaskMessage";
 
 const client = new Client({
   intents: [
@@ -14,6 +16,9 @@ client
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
   })
   .on(Events.MessageCreate, async (message) => {
+    if (message.author.id === client.user.id) {
+      return;
+    }
     console.log(message.content);
     if (message.content == "Hello") {
       await message.reply("Hello World!");
@@ -26,11 +31,11 @@ client
         return;
       }
 
-      const sl = spreadLoader;
+      const data = taskView.data(spreadLoader.sheetAccessor);
 
-      const text: string = [`タイトル${sl.getValue(0, 0)}`].join("\n");
+      const sendMessage = new AllTaskMessage().gen(data);
 
-      await message.channel.send(text);
+      await message.channel.send(sendMessage);
     }
   });
 
