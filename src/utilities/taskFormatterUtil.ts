@@ -1,6 +1,6 @@
 import { TaskPriority, CellPosition, TaskData } from "../types/dataCellPos";
 import { GoogleSpreadSheetJson } from "../oritinalJsonType"
-import * as config from "../../private/dataCellPosConfig.json"
+import * as config from "../formatter/dataCellPosConfig.json"
 import * as dfns from "date-fns"
 
 /**

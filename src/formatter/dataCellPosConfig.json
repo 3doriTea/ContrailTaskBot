@@ -1,0 +1,15 @@
+{
+  "title": { "column": 0, "row": 0 },
+  "teamName": { "column": 0, "row": 1 },
+  "begin": {
+    "wBS": { "column": 0, "row": 7 },
+    "task": { "column": 1, "row": 7 },
+    "taskPriority": { "column": 2, "row": 7 },
+    "taskAssignee": { "column": 3, "row": 7 },
+    "taskDateStart": { "column": 4, "row": 7 },
+    "taskDateEnd": { "column": 5, "row": 7 },
+    "taskDuration": { "column": 6, "row": 7 },
+    "taskCompletionRate": { "column": 7, "row": 7 },
+    "taskDaysToStart": { "column": 8, "row": 7 }
+  }
+}

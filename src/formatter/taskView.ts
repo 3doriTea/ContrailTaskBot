@@ -1,6 +1,6 @@
 import { IFormatter } from "./iFormatter";
 import { SpreadSheetAccessor } from "../spreadSheetAccessor";
-import * as config from "../../private/dataCellPosConfig.json"
+import * as config from "./dataCellPosConfig.json"
 import { TasksData } from "../types/dataCellPos";
 import { genTaskLinesText, genTasksData } from "../utilities/taskFormatterUtil";
 
