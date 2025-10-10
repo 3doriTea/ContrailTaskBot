@@ -1,6 +1,7 @@
 import { TrelloElement } from "./trelloElement";
 import { Card } from "./card";
-import { cardsGetRequest } from "./utility"
+import { boardGetRequest } from "./utility"
+import { List, Lists, ListsData } from "./list";
 
 /**
  * １つのボードデータ
@@ -21,12 +22,8 @@ export type Boards = Array<Board>;
  * ボードクラス
  */
 export class Board extends TrelloElement<BoardData> {
-  constructor(json: BoardData, private trelloId_: string) {
+  constructor(json: BoardData) {
     super(json);
-  }
-
-  public get trelloId() : string {
-    return this.trelloId_;
   }
 
   public get id() : string {
@@ -37,9 +34,22 @@ export class Board extends TrelloElement<BoardData> {
     return this.json.name;
   }
 
-  async getCard() : Promise<Card> {
-    // cardsGetRequest()
+  public async getLists() : Promise<Lists> {
+    const data = await boardGetRequest<ListsData>(this.id, "lists");
+    return data.map((listData) : List =>
+      {
+        return new List(listData);
+      });
   }
+
+  public static async load(boardId: string) : Promise<Board> {
+    const data = await boardGetRequest<BoardData>(boardId);
+    return new Board(data);
+  }
+
+  // async getCard() : Promise<Card> {
+  //   // cardsGetRequest()
+  // }
 
   // async createCard(): Promise<Card> {
 

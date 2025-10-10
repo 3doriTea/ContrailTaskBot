@@ -1,7 +1,8 @@
 export class TrelloElement<JsonT = any> {
   constructor(protected json: JsonT) {}
 
-  public get ref(): JsonT {
+  /** 生Jsonデータ */
+  public get row(): JsonT {
     return this.json;
   } 
 }
