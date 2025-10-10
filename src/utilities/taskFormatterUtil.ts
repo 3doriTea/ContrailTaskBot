@@ -3,6 +3,31 @@ import { GoogleSpreadSheetJson } from "../oritinalJsonType"
 import * as config from "../formatter/dataCellPosConfig.json"
 import * as dfns from "date-fns"
 
+export type WBS = {
+  major: number;
+  minor: number;
+  patch: string;
+};
+
+/**
+ * WBS の文字列から WBS を生成する
+ * @param str wbsの文字列
+ * @returns WBS or null
+ */
+export const genWBS = (str: string) : WBS | null => {
+  const regex = /(\d+)(?:\.(\d+))?(?:\.(.*))?/;
+  const match = str.match(regex);
+  if (match) {
+    return {
+      major: Number.parseInt(match[1]) ?? 0,
+      minor: Number.parseInt(match[2]) ?? 0,
+      patch: match[3] ?? "",
+    };
+  }
+
+  return null;
+};
+
 /**
  * タスクのjsonからタスクデータの配列を生成
  * @param json Google Spread Sheet のjson
@@ -29,6 +54,8 @@ export const genTasksData = (json: GoogleSpreadSheetJson) : Array<TaskData> => {
         return;
       }
       const taskPriority: TaskPriority = priority;
+
+      console.log(line[column(config.begin.taskDateStart)]);
 
       return {
         wBS: line[column(config.begin.wBS)],

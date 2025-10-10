@@ -5,6 +5,7 @@ import { AllTaskMessage } from "./messageBuilder/allTaskMessage";
 import { Board } from "./trelloClient/board";
 import { Card } from "./trelloClient/card";
 import { List } from "./trelloClient/list";
+import { updateTasks } from "./updateProc";
 
 // プロキシが設定されているなら使う
 if (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) {
@@ -12,6 +13,9 @@ if (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) {
 }
 
 const main = async () => {
+  await updateTasks();
+  return;
+
   const board = await Board.load(process.env.TARGET_TRELLO_BOARD_ID);
 
   console.log(`取得したボード「${board.name}」(${board.id})`);
@@ -38,25 +42,20 @@ const main = async () => {
     });
   });
 
-  return;
+  // return;
 
-  lists.forEach((list) => {
-    console.log(list.row);
-  });
+  // lists.forEach((list) => {
+  //   console.log(list.row);
+  // });
 
-  return;
-  const loader = new SpreadLoader(process.env.TARGET_SPREAD_SEET_ID);
-  await loader.load("GanttChart");
-  
-  const value = loader.getValue(0, 0);
-  console.log(`値は「${value}」`);
-  console.log(`url: ${loader.previousAccessUri}`);
+  // return;
+  // const loader = new SpreadLoader(process.env.TARGET_SPREAD_SEET_ID);
+  // await loader.load("GanttChart");
 
-  const text = taskView.data(loader.sheetAccessor);
-  console.log(text);
+  // taskView.data(loader.sheetAccessor);
 
-  const showText = new AllTaskMessage().gen(text);
-  console.log(showText);
+  // const showText = new AllTaskMessage().gen(text);
+  // console.log(showText);
 }
 
 main().then();
