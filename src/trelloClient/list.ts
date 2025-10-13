@@ -1,6 +1,6 @@
 import { Card, CardData, Cards, CardsData } from "./card";
-import { TrelloElement } from "./trelloElement";
-import { listGetRequest } from "./utility";
+import { TrelloElement, TrelloId } from "./trelloElement";
+import { listGetRequest, listPostRequest, listPutRequest } from "./utility";
 
 export type ListData = {
   id: string;
@@ -8,7 +8,7 @@ export type ListData = {
   closed: boolean;
   pos: number;
   idBoard: string;
-}
+};
 
 export type ListsData = Array<ListData>;
 
@@ -27,10 +27,10 @@ export class List extends TrelloElement<ListData> {
     return this.json.name;
   }
 
-  public async getCards() : Promise<Cards> {
+  public async getCards(): Promise<Cards> {
     const data = await listGetRequest<CardsData>(this.id, "cards");
-    return data.map((cardData: CardData) : Card => {
+    return data.map((cardData: CardData): Card => {
       return new Card(cardData);
-    })
+    });
   }
 }

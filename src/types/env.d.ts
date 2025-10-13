@@ -8,5 +8,6 @@ declare namespace NodeJS {
     readonly TRELLO_TOKEN: string;
     readonly TRELLO_API_KEY: string;
     readonly TARGET_TRELLO_BOARD_ID: string;
+    readonly TARGET_TRELLO_ORGANIZATION_ID: string;
   }
 }

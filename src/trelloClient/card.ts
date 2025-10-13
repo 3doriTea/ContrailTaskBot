@@ -1,6 +1,11 @@
 import { TrelloElement, TrelloId } from "./trelloElement";
-import { CheckListData, CheckListsData, CheckList, CheckLists } from "./checkList";
-import { cardsGetRequest } from "./utility";
+import {
+  CheckListData,
+  CheckListsData,
+  CheckList,
+  CheckLists,
+} from "./checkList";
+import { cardsGetRequest, cardsPutRequest, cardsPostRequest } from "./utility";
 
 export type CardData = {
   id: TrelloId;
@@ -13,7 +18,7 @@ export type CardData = {
     start: Date;
     voites: number;
     subscribed: boolean;
-  }
+  };
   closed: boolean;
   idBoard: TrelloId;
   idList: TrelloId;
@@ -29,14 +34,41 @@ export type CardData = {
   pinned: boolean;
   cover: {
     color: string;
-  }
-}
+  };
+};
 
 export type CardsData = Array<CardData>;
 
 export type Cards = Array<Card>;
 
+type QueryParamCreateCard = {
+  name?: string;
+  desc?: string;
+  // pos
+  due?: string;
+  start?: string;
+  dueComplete?: boolean;
+  idList: TrelloId;
+};
+
+type QueryParamUpdateCard = {
+  name?: string;
+  desc?: string;
+  closed: boolean;
+  // pos
+  due?: string;
+  start?: string;
+  dueComplete?: boolean;
+  idList?: TrelloId;
+};
+
 export class Card extends TrelloElement<CardData> {
+  public static async create(param: QueryParamCreateCard): Promise<Card> {
+    const paramStr = new URLSearchParams().toString();
+    const data = await cardsPostRequest<CardData>("", "", param);
+    return new Card(data);
+  }
+
   constructor(json: CardData) {
     super(json);
   }
@@ -47,8 +79,13 @@ export class Card extends TrelloElement<CardData> {
 
   public async getCheckLists(): Promise<CheckLists> {
     const data = await cardsGetRequest<CheckListsData>(this.id, "checklists");
-    return data.map((checkListData: CheckListData) : CheckList => {
+    return data.map((checkListData: CheckListData): CheckList => {
       return new CheckList(checkListData);
     });
+  }
+
+  public async updateCard(param: QueryParamUpdateCard): Promise<Card> {
+    const data = await cardsPutRequest<CardData>(this.id, "", param);
+    return new Card(data);
   }
 }
