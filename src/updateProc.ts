@@ -4,6 +4,7 @@ import { genWBS } from "./utilities/taskFormatterUtil";
 import { Board } from "./trelloClient/board";
 import { Tasker } from "./tasker/tasker";
 import { Card } from "./trelloClient/card";
+import { toUser } from "./utilities/memberConverter";
 
 export const updateTasks = async () => {
   const loader = new SpreadLoader(process.env.TARGET_SPREAD_SEET_ID);
@@ -33,6 +34,8 @@ export const updateTasks = async () => {
     previousData,
     // create
     async (task) => {
+       task.taskAssignee
+
       await Card.create({ name: task.task, idList: todoList.id });
     },
     // update

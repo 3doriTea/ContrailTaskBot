@@ -49,6 +49,7 @@ type QueryParamCreateCard = {
   start?: string;
   dueComplete?: boolean;
   idList: TrelloId;
+  idMembers?: Array<TrelloId>;
 };
 
 type QueryParamUpdateCard = {

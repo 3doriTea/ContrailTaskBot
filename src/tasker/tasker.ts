@@ -53,13 +53,27 @@ export class Tasker {
     const needCreateTasks: TaskData[] = todoTasks
       .map((todoTask) => {
         if (!prevTaskNames.includes(todoTask.task)) {
+          // タスクカードに含まれていないタスクは新しく作るものとしてまとめる
           return todoTask;
         }
       })
       .filter((todoTasks) => todoTasks);
 
+    // タスクカードを新しく作る処理
     needCreateTasks.forEach(async (task) => {
       await onCreate(task);
     });
+  
+  const needRemoveCards: Cards = previous.map((prevCard) => {
+    if (!todoTasks.filter((todoTask) => todoTask.task == prevCard.row.name)) {
+      // 現在のtodo に含まれない タスク名をまとめる
+      return prevCard;
+    }
+  }).filter((card) => card);
+
+  // タスクカードを完了済みとして移動する処理
+  needRemoveCards.forEach(async (card) => {
+    await onRemove(card.id);
+  });
   }
 }
