@@ -14,7 +14,7 @@ if (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) {
 }
 
 const main = async () => {
-  //await updateTasks();
+  await updateTasks();
 
   const board = await Board.load(process.env.TARGET_TRELLO_BOARD_ID);
 
