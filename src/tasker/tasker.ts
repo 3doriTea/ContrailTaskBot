@@ -1,6 +1,7 @@
 import { TaskData, TasksData } from "../types/dataCellPos";
 import { genWBS } from "../utilities/taskFormatterUtil";
 import { Cards } from "../trelloClient/card";
+import { idToUser } from "../utilities/memberConverter";
 
 export class Tasker {
   /**
@@ -47,16 +48,20 @@ export class Tasker {
 
     type TaskPair = {
       name: string;
+      member: string;
+
       // TODO: ユーザ追加
     };
 
     /**
      * Trelloにある前のタスク名
      */
-    const prevTasks: TaskPair[] = previous.map(
-      (task) : TaskPair => { return {
+    const prevTasks: TaskPair[] = previous.map((task): TaskPair => {
+      return {
         name: task.row.name,
-      }});
+        member: idToUser(task.row.idMembers[0]).nickname,
+      };
+    });
 
     const needCreateTasks: TaskData[] = todoTasks
       .map((todoTask) => {
@@ -72,17 +77,21 @@ export class Tasker {
     needCreateTasks.forEach(async (task) => {
       await onCreate(task);
     });
-  
-  const needRemoveCards: Cards = previous.map((prevCard) => {
-    if (!todoTasks.filter((todoTask) => todoTask.task == prevCard.row.name)) {
-      // 現在のtodo に含まれない タスク名をまとめる
-      return prevCard;
-    }
-  }).filter((card) => card);
 
-  // タスクカードを完了済みとして移動する処理
-  needRemoveCards.forEach(async (card) => {
-    await onRemove(card.id);
-  });
+    const needRemoveCards: Cards = previous
+      .map((prevCard) => {
+        if (
+          !todoTasks.filter((todoTask) => todoTask.task == prevCard.row.name)
+        ) {
+          // 現在のtodo に含まれない タスク名をまとめる
+          return prevCard;
+        }
+      })
+      .filter((card) => card);
+
+    // タスクカードを完了済みとして移動する処理
+    needRemoveCards.forEach(async (card) => {
+      await onRemove(card.id);
+    });
   }
 }
