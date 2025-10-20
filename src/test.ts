@@ -20,6 +20,13 @@ const main = async () => {
 
   console.log(`取得したボード「${board.name}」(${board.id})`);
 
+
+  if (!process.env?.TARGET_TRELLO_ORGANIZATION_ID)
+  {
+    console.error("TARGET_TRELLO_ORGANIZATION_ID未指定です。.envファイルを確認してください。");
+    return;
+  }
+
   const org = await Organization.load(
     process.env.TARGET_TRELLO_ORGANIZATION_ID
   );

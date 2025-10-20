@@ -45,13 +45,22 @@ export class Tasker {
       })
       .filter((task) => task);
 
+    type TaskPair = {
+      name: string;
+      // TODO: ユーザ追加
+    };
+
     /**
      * Trelloにある前のタスク名
      */
-    const prevTaskNames = previous.map((task) => task.row.name);
+    const prevTasks: TaskPair[] = previous.map(
+      (task) : TaskPair => { return {
+        name: task.row.name,
+      }});
 
     const needCreateTasks: TaskData[] = todoTasks
       .map((todoTask) => {
+        // 名前の一致だけではわからない
         if (!prevTaskNames.includes(todoTask.task)) {
           // タスクカードに含まれていないタスクは新しく作るものとしてまとめる
           return todoTask;

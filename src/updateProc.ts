@@ -34,9 +34,9 @@ export const updateTasks = async () => {
     previousData,
     // create
     async (task) => {
-       task.taskAssignee
+      const trelloId = toUser(task.taskAssignee).trello;
 
-      await Card.create({ name: task.task, idList: todoList.id });
+      await Card.create({ name: task.task, idList: todoList.id, idMembers: [ trelloId ] });
     },
     // update
     async (cardId, task) => {},
